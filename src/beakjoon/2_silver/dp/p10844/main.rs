@@ -2,9 +2,9 @@ use std::io::stdin;
 
 const MOD: u64 = 1_000_000_000;
 fn main() {
-    let mut str = String::new();
-    stdin().read_line(&mut str).unwrap();
-    let n: usize = str.trim().parse().unwrap();
+    let mut input = String::new();
+    stdin().read_line(&mut input).unwrap();
+    let n: usize = input.trim().parse().unwrap();
     let mut d: Vec<Vec<u64>> = vec![vec![0; 10]; n + 1];
 
     for i in 1..10 {
