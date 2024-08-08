@@ -21,6 +21,7 @@ fn main() {
     }
 
     let sum = d[n].iter().sum::<u64>() % MOD;
+    let a: i16;
 
     println!("{sum}");
 }

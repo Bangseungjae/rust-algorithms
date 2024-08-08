@@ -1,26 +1,34 @@
+use std::cmp::max;
 use std::io::stdin;
 
-const MOD: u64 = 1_000_000_000;
 fn main() {
-    let mut str = String::new();
-    stdin().read_line(&mut str).unwrap();
-    let n: usize = str.trim().parse().unwrap();
-    let mut d: Vec<Vec<u64>> = vec![vec![0; 10]; n + 1];
+    let mut input: String = String::new();
+    stdin().read_line(&mut input).unwrap();
+    let n = input.trim().parse::<usize>().unwrap();
+    input.clear();
+    stdin().read_line(&mut input).unwrap();
 
-    for i in 1..10 {
-        d[1][i] = 1;
+    let arr: Vec<isize> = input.split_ascii_whitespace().flat_map(str::parse::<isize>).collect();
+    let mut l_arr = vec![0; n];
+    let mut r_arr = vec![0; n];
+    l_arr[0] = arr[0];
+    r_arr[n - 1] = arr[n - 1];
+
+    let mut result: isize = l_arr[0];
+    for i in 1..n {
+        l_arr[i] = max(arr[i], l_arr[i - 1] + arr[i]);
+        result = max(result, l_arr[i]);
     }
 
-    for i in 2..=n {
-        d[i][0] = d[i - 1][1];
-        d[i][9] = d[i - 1][8];
-
-        for j in 1..9 {
-            d[i][j] = (d[i - 1][j - 1] + d[i - 1][j + 1]) % MOD;
+    if n > 1 {
+        for i in (0..=n - 2).rev() {
+            r_arr[i] = max(arr[i], r_arr[i + 1] + arr[i]);
         }
     }
 
-    let sum = d[n].iter().sum::<u64>() % MOD;
-
-    println!("{sum}");
+    for i in 1..n - 1 {
+        let temp = l_arr[i - 1] + r_arr[i + 1];
+        result = max(temp, result);
+    }
+    println!("{result}\n");
 }
